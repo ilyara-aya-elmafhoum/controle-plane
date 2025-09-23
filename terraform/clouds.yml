@@ -1,0 +1,12 @@
+clouds:
+  infomaniak:
+    auth:
+      auth_url: "https://api.pub1.infomaniak.cloud/identity"
+      username: "PCU-2GEYUBD"
+      password: "caNDwgS65J7t@"
+      project_name: "PCP-2GEYUBD"
+      user_domain_name: "Default"
+      project_domain_name: "Default"
+    region_name: "dc3-a"
+    interface: "public"
+    identity_api_version: 3

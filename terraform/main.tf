@@ -13,7 +13,6 @@ provider "openstack" {
 }
 
 # SECURITY GROUP
-
 resource "openstack_networking_secgroup_v2" "controle_plane_sg" {
   name        = "controle-plane-secgroup"
   description = "Règles pour la machine Manager (SSH + Web + outils)"
@@ -60,42 +59,8 @@ resource "openstack_networking_secgroup_rule_v2" "semaphore" {
   security_group_id = openstack_networking_secgroup_v2.controle_plane_sg.id
 }
 
-# Egress rules
-resource "openstack_networking_secgroup_rule_v2" "egress_dns" {
-  direction         = "egress"
-  ethertype         = "IPv4"
-  protocol          = "udp"
-  port_range_min    = 53
-  port_range_max    = 53
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.controle_plane_sg.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "egress_https" {
-  direction         = "egress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 443
-  port_range_max    = 443
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.controle_plane_sg.id
-}
-
-resource "openstack_networking_secgroup_rule_v2" "egress_ntp" {
-  direction         = "egress"
-  ethertype         = "IPv4"
-  protocol          = "udp"
-  port_range_min    = 123
-  port_range_max    = 123
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = openstack_networking_secgroup_v2.controle_plane_sg.id
-}
-
-
 # VM controle-plane
-
-
-resource "openstack_compute_instance_v2" "controle-plane" {
+resource "openstack_compute_instance_v2" "controle_plane" {
   name        = "controle-plane"
   flavor_name = var.vm_flavor
   image_name  = var.vm_image
@@ -105,7 +70,6 @@ resource "openstack_compute_instance_v2" "controle-plane" {
     name = "ext-net1"
   }
 
-  # Utilisation de l'ID pour éviter le conflit
   security_groups = [
     openstack_networking_secgroup_v2.controle_plane_sg.id
   ]
@@ -115,32 +79,24 @@ resource "openstack_compute_instance_v2" "controle-plane" {
 
 locals {
   cloudinit_vars = {
-    admin_cidr             = var.admin_cidr
-    sysadmin_public_key    = file(var.sysadmin_pub_key_path)
-    devops_aya_public_key  = file(var.devops_aya_pub_key_path)
+    admin_cidr              = var.admin_cidr
+    sysadmin_public_key     = file(var.sysadmin_pub_key_path)
+    devops_aya_public_key   = file(var.devops_aya_pub_key_path)
     terraform_bot_public_key = file(var.terraform_bot_pub_key_path)
   }
 }
 
-
 # Floating IP
-
-resource "openstack_networking_floatingip_v2" "controle-plane_fip" {
+resource "openstack_networking_floatingip_v2" "controle_plane_fip" {
   pool = var.floating_ip_pool
 }
 
-resource "openstack_networking_floatingip_associate_v2" "controle-plane_assoc" {
-  floating_ip = openstack_networking_floatingip_v2.controle-plane_fip.address
-  port_id     = openstack_compute_instance_v2.controle-plane.network.0.port
+resource "openstack_networking_floatingip_associate_v2" "controle_plane_assoc" {
+  floating_ip = openstack_networking_floatingip_v2.controle_plane_fip.address
+  port_id     = openstack_compute_instance_v2.controle_plane.network.0.port
 }
 
-
+# OUTPUT
 output "controle_plane_ip" {
-  value = openstack_compute_instance_v2.controle_plane.access_ip_v4
+  value = openstack_networking_floatingip_v2.controle_plane_fip.address
 }
-
-output "private_key" {
-  value     = tls_private_key.controle_plane_key.private_key_openssh
-  sensitive = true
-}
-

@@ -9,21 +9,21 @@ variable "ssh_key_name" {
 }
 
 
-
-variable "sysadmin_pub_key_path" {
-  description = "Chemin vers la clé publique de l'utilisateur sysadmin"
+variable "sysadmin_pub_key" {
+  description = "Clé publique SSH du sysadmin"
   type        = string
 }
 
-variable "devops_aya_pub_key_path" {
-  description = "Chemin vers la clé publique de l'utilisateur devops-aya"
+variable "devops_aya_pub_key" {
+  description = "Clé publique SSH de l’utilisateur devops-aya"
   type        = string
 }
 
-variable "terraform_bot_pub_key_path" {
-  description = "Chemin vers la clé publique du bot Terraform"
+variable "terraform_bot_pub_key" {
+  description = "Clé publique SSH utilisée par Terraform"
   type        = string
 }
+
 
 variable "vm_flavor" {
   description = "Flavor de la VM"

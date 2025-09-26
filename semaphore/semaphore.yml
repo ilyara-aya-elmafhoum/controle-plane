@@ -2,12 +2,12 @@ blocks:
   - name: Terraform Apply
     task:
       secrets:
-        - name: ssh-keys      
-        - name: openstack     
+        - name: ssh-keys
+        - name: openstack
       jobs:
         - name: Create control-plane
           commands:
-            - cd terraform
+            - cd terraform           
             - terraform init -input=false
             - terraform apply -auto-approve -input=false
             - terraform output -raw controle_plane_ip > ../ansible/control_plane_ip.txt

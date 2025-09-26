@@ -8,6 +8,7 @@ blocks:
         - name: Create control-plane
           commands:
                # Export des variables pour Terraform
+            - echo "Variables Terraform"
             - export TF_VAR_openstack_cloud=$OPENSTACK_CLOUD_SECRET
             - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
             - export TF_VAR_OS_PASSWORD=$OS_PASSWORD_SECRET

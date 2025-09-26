@@ -7,7 +7,6 @@ blocks:
       jobs:
         - name: Create control-plane
           commands:
-               # Export des variables pour Terraform
             - echo "Variables Terraform"
             - export TF_VAR_openstack_cloud=$OPENSTACK_CLOUD_SECRET
             - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
@@ -21,6 +20,8 @@ blocks:
             - export TF_VAR_vm_image=$VM_IMAGE_SECRET
             - export TF_VAR_floating_ip_pool=$FLOATING_IP_POOL_SECRET
             - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
+
+            - env | grep TF_VAR    # vérification des exports
 
             - cd repository_1_template_1/terraform
             - terraform init -input=false

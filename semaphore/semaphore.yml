@@ -6,6 +6,7 @@ blocks:
       jobs:
         - name: Create control-plane
           commands:
+            - checkout  #
             - export TF_VAR_openstack_cloud=$OPENSTACK_CLOUD_SECRET
             - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
             - export TF_VAR_OS_PASSWORD=$OS_PASSWORD_SECRET
@@ -19,8 +20,7 @@ blocks:
             - export TF_VAR_floating_ip_pool=$FLOATING_IP_POOL_SECRET
             - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
 
-
-            - cd repository_1_template_1/terraform
+            - cd repository_1_template_1/terraform  
             - terraform init -input=false
             - terraform plan -input=false
             - terraform apply -auto-approve -input=false

@@ -1,30 +1,15 @@
-blocks:
-  - name: Terraform Apply
-    task:
-      secrets:
-        - name: variables
-      jobs:
-        - name: Create control-plane
-          commands:
-            - checkout
-            - cd repository_1_template_1/terraform
-            
-            - terraform init -input=false
-            
-            # 
-            - |
-              terraform apply -auto-approve -input=false \
-                -var "openstack_cloud=$OPENSTACK_CLOUD_SECRET" \
-                -var "OS_USERNAME=$OS_USERNAME_SECRET" \
-                -var "OS_PASSWORD=$OS_PASSWORD_SECRET" \
-                -var "OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET" \
-                -var "OS_auth_url=$OS_AUTH_URL_SECRET" \
-                -var "sysadmin_pub_key=$SYSADMIN_PUB_KEY_SECRET" \
-                -var "devops_aya_pub_key=$DEVOPS_AYA_PUB_KEY_SECRET" \
-                -var "terraform_bot_pub_key=$TERRAFORM_BOT_PUB_KEY_SECRET" \
-                -var "vm_flavor=$VM_FLAVOR_SECRET" \
-                -var "vm_image=$VM_IMAGE_SECRET" \
-                -var "floating_ip_pool=$FLOATING_IP_POOL_SECRET" \
-                -var "admin_cidr=$ADMIN_CIDR_SECRET"
-            
-            - terraform output -raw controle_plane_ip > ../ansible/control_plane_ip.txt
+commands:
+  - checkout
+  - cd repository_1_template_1/terraform
+  
+  # Voir TOUTES les variables d'environnement
+  - echo "=== TOUTES les variables d'environnement ==="
+  - env
+  
+  # Voir spécifiquement les TF_VAR_
+  - echo "=== Variables TF_VAR_ ==="
+  - env | grep TF_VAR_
+  
+  # Voir les variables sans préfixe
+  - echo "=== Autres variables ==="
+  - env | grep -E "(OPENSTACK|OS_|sysadmin|devops|terraform|vm_|floating|admin)"

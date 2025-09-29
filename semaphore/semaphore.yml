@@ -2,7 +2,7 @@ blocks:
   - name: Terraform Apply
     task:
       secrets:
-        - name: variables
+        - name: terraform
       jobs:
         - name: Create control-plane
           commands:

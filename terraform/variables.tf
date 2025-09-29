@@ -69,3 +69,18 @@ variable "admin_cidr" {
   type        = string
   default     = "0.0.0.0/0"  # Valeur par défaut
 }
+
+variable "sysadmin_pub_key_path" {
+  description = "Path to the sysadmin SSH public key"
+  type        = string
+}
+
+variable "devops_aya_pub_key_path" {
+  description = "Path to the devops Aya SSH public key"
+  type        = string
+}
+
+variable "terraform_bot_pub_key_path" {
+  description = "Path to the terraform bot SSH public key"
+  type        = string
+}

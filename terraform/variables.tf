@@ -31,20 +31,7 @@ variable "ssh_key_name" {
   default     = "my-ssh-key"  # Ajoutez une valeur par défaut
 }
 
-variable "sysadmin_pub_key" {
-  description = "Clé publique SSH sysadmin"
-  type        = string
-}
 
-variable "devops_aya_pub_key" {
-  description = "Clé publique SSH devops-aya"
-  type        = string
-}
-
-variable "terraform_bot_pub_key" {
-  description = "Clé publique SSH terraform-bot"
-  type        = string
-}
 
 variable "vm_flavor" {
   description = "Type d'instance VM"

@@ -2,34 +2,29 @@ blocks:
   - name: Terraform Apply
     task:
       secrets:
-        - name: variables  
+        - name: terraform-variabls
       jobs:
         - name: Create control-plane
           commands:
             - checkout
             - cd repository_1_template_1/terraform
             
-            # Créer un fichier de variables Terraform
-            - |
-              cat > terraform.tfvars << EOF
-              openstack_cloud = "$OPENSTACK_CLOUD_SECRET"
-              OS_USERNAME = "$OS_USERNAME_SECRET"
-              OS_PASSWORD = "$OS_PASSWORD_SECRET"
-              OS_PROJECT_NAME = "$OS_PROJECT_NAME_SECRET"
-              OS_auth_url = "$OS_AUTH_URL_SECRET"
-              sysadmin_pub_key = "$SYSADMIN_PUB_KEY_SECRET"
-              devops_aya_pub_key = "$DEVOPS_AYA_PUB_KEY_SECRET"
-              terraform_bot_pub_key = "$TERRAFORM_BOT_PUB_KEY_SECRET"
-              vm_flavor = "$VM_FLAVOR_SECRET"
-              vm_image = "$VM_IMAGE_SECRET"
-              floating_ip_pool = "$FLOATING_IP_POOL_SECRET"
-              admin_cidr = "$ADMIN_CIDR_SECRET"
-              EOF
-            
-            - echo "Fichier terraform.tfvars créé:"
-            - cat terraform.tfvars
-            
             - terraform init -input=false
-            - terraform plan -var-file=terraform.tfvars -input=false
-            - terraform apply -var-file=terraform.tfvars -auto-approve -input=false
+            
+            # 
+            - |
+              terraform apply -auto-approve -input=false \
+                -var "openstack_cloud=$OPENSTACK_CLOUD_SECRET" \
+                -var "OS_USERNAME=$OS_USERNAME_SECRET" \
+                -var "OS_PASSWORD=$OS_PASSWORD_SECRET" \
+                -var "OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET" \
+                -var "OS_auth_url=$OS_AUTH_URL_SECRET" \
+                -var "sysadmin_pub_key=$SYSADMIN_PUB_KEY_SECRET" \
+                -var "devops_aya_pub_key=$DEVOPS_AYA_PUB_KEY_SECRET" \
+                -var "terraform_bot_pub_key=$TERRAFORM_BOT_PUB_KEY_SECRET" \
+                -var "vm_flavor=$VM_FLAVOR_SECRET" \
+                -var "vm_image=$VM_IMAGE_SECRET" \
+                -var "floating_ip_pool=$FLOATING_IP_POOL_SECRET" \
+                -var "admin_cidr=$ADMIN_CIDR_SECRET"
+            
             - terraform output -raw controle_plane_ip > ../ansible/control_plane_ip.txt

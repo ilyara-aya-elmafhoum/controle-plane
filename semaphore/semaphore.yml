@@ -1,15 +1,37 @@
-commands:
-  - checkout
-  - cd repository_1_template_1/terraform
-  
-  # Voir TOUTES les variables d'environnement
-  - echo "=== TOUTES les variables d'environnement ==="
-  - env
-  
-  # Voir spécifiquement les TF_VAR_
-  - echo "=== Variables TF_VAR_ ==="
-  - env | grep TF_VAR_
-  
-  # Voir les variables sans préfixe
-  - echo "=== Autres variables ==="
-  - env | grep -E "(OPENSTACK|OS_|sysadmin|devops|terraform|vm_|floating|admin)"
+blocks:
+  - name: Terraform Apply
+    task:
+      secrets:
+        - name: variables
+      jobs:
+        - name: Create control-plane
+          commands:
+            - checkout
+            - cd repository_1_template_1/terraform
+            
+            # Créer terraform.tfvars depuis les variables d'environnement
+            - |
+              cat > terraform.tfvars << EOF
+              openstack_cloud = "$TF_VAR_openstack_cloud"
+              OS_USERNAME = "$TF_VAR_OS_USERNAME"
+              OS_PASSWORD = "$TF_VAR_OS_PASSWORD"
+              OS_PROJECT_NAME = "$TF_VAR_OS_PROJECT_NAME"
+              OS_auth_url = "$TF_VAR_OS_auth_url"
+              sysadmin_pub_key = "$TF_VAR_sysadmin_pub_key"
+              devops_aya_pub_key = "$TF_VAR_devops_aya_pub_key"
+              terraform_bot_pub_key = "$TF_VAR_terraform_bot_pub_key"
+              vm_flavor = "$TF_VAR_vm_flavor"
+              vm_image = "$TF_VAR_vm_image"
+              floating_ip_pool = "$TF_VAR_floating_ip_pool"
+              admin_cidr = "$TF_VAR_admin_cidr"
+              EOF
+            
+            # Debug
+            - echo "=== Contenu de terraform.tfvars ==="
+            - cat terraform.tfvars
+            
+            - terraform init -input=false
+            - terraform plan -var-file=terraform.tfvars -input=false
+            - terraform apply -var-file=terraform.tfvars -auto-approve -input=false
+            
+            - terraform output -raw controle_plane_ip > ../ansible/control_plane_ip.txt

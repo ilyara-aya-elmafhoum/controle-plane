@@ -79,12 +79,13 @@ resource "openstack_compute_instance_v2" "controle_plane" {
 
 locals {
   cloudinit_vars = {
-    admin_cidr              = var.admin_cidr
-    sysadmin_public_key     = file(var.sysadmin_pub_key_path)
-    devops_aya_public_key   = file(var.devops_aya_pub_key_path)
-    terraform_bot_public_key = file(var.terraform_bot_pub_key_path)
+    admin_cidr               = var.admin_cidr
+    sysadmin_public_key      = var.sysadmin_pub_key
+    devops_aya_public_key    = var.devops_aya_pub_key
+    terraform_bot_public_key = var.terraform_bot_pub_key
   }
 }
+
 
 # Floating IP
 resource "openstack_networking_floatingip_v2" "controle_plane_fip" {
@@ -100,3 +101,4 @@ resource "openstack_networking_floatingip_associate_v2" "controle_plane_assoc" {
 output "controle_plane_ip" {
   value = openstack_networking_floatingip_v2.controle_plane_fip.address
 }
+

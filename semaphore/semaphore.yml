@@ -29,11 +29,14 @@ blocks:
             - export TF_VAR_floating_ip_pool=$floating_ip_pool
             - export TF_VAR_admin_cidr=$admin_cidr
 
+            # Vérification des variables exportées
+            - echo "Variables OpenStack :"
             - env | grep OS_
+            - echo "Variables Terraform :"
             - env | grep TF_VAR_
 
             - terraform init -input=false
-            - terraform state list | xargs -n1 terraform state rm || true
+            
             - terraform plan -out=tfplan -input=false
             - terraform apply -auto-approve tfplan
 

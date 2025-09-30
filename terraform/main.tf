@@ -8,7 +8,13 @@ terraform {
   required_version = ">= 1.6.0"
 }
 
-provider "openstack" {}
+provider "openstack" {
+  cloud        = var.openstack_cloud
+  user_name    = var.OS_USERNAME
+  password     = var.OS_PASSWORD
+  tenant_name  = var.OS_PROJECT_NAME
+  auth_url     = var.OS_auth_url
+}
 
 # SECURITY GROUP
 resource "openstack_networking_secgroup_v2" "controle_plane_sg" {

@@ -12,20 +12,14 @@ blocks:
             - checkout
             - cd terraform
 
-          
             # Export des variables OpenStack
-           
             - export OS_USERNAME=$OS_USERNAME
             - export OS_PASSWORD=$OS_PASSWORD
             - export OS_PROJECT_NAME=$OS_PROJECT_NAME
-            
             - export OS_AUTH_URL=$OS_AUTH_URL
-
             - export OS_REGION_NAME="RegionOne"
 
-           
             # Export des variables Terraform
-           
             - export TF_VAR_ssh_key_name=$ssh_key_name
             - export TF_VAR_sysadmin_pub_key="$sysadmin_pub_key"
             - export TF_VAR_devops_aya_pub_key="$devops_aya_pub_key"
@@ -36,12 +30,11 @@ blocks:
             - export TF_VAR_admin_cidr=$admin_cidr
 
             # Debug (à activer seulement pour test)
-          
             - env | grep OS_
             - env | grep TF_VAR_
 
-            # Terraform
-            
+            # Terraform : réinitialisation de l'état pour forcer la recréation
             - terraform init -input=false
-            - terraform plan -out=tfplan -input=false
+            # Exemple : forcer uniquement la ressource controle_plane à être recréée
+            - terraform plan -replace="openstack_compute_instance_v2.controle_plane" -out=tfplan -input=false
             - terraform apply -auto-approve tfplan

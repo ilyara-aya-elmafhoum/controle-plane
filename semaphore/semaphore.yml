@@ -35,7 +35,6 @@ blocks:
             - terraform init -input=false
             - terraform state list | xargs -n1 terraform state rm || true
             - terraform plan -out=tfplan -input=false
-
             - terraform apply -auto-approve tfplan
-            
+
            

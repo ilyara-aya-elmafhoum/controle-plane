@@ -2,17 +2,15 @@ blocks:
   - name: Terraform Apply
     task:
       secrets:
-        - name: terraform   
+        - name: terraform
       jobs:
         - name: Create control-plane
           commands:
             - checkout
-            - cd repository_1_template_1/terraform
-
-            
+            - cd terraform
+            - export TF_VAR_OS_USERNAME=$OS_USERNAME
+            - export TF_VAR_OS_PASSWORD=$OS_PASSWORD
+            - export TF_VAR_OS_PROJECT_NAME=$OS_PROJECT_NAME
+            - export TF_VAR_OS_auth_url=$OS_auth_url
             - terraform init -input=false
-
             - terraform apply -auto-approve -input=false
-
-            
-            - terraform output -raw controle_plane_ip > ../ansible/control_plane_ip.txt

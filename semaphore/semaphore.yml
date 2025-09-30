@@ -12,32 +12,58 @@ blocks:
             - checkout
             - cd terraform
 
-            # Export des variables OpenStack
-            - export OS_USERNAME=$OS_USERNAME
-            - export OS_PASSWORD=$OS_PASSWORD
-            - export OS_PROJECT_NAME=$OS_PROJECT_NAME
-            - export OS_AUTH_URL=$OS_AUTH_URL
+            # -------------------------
+            # Export des variables OpenStack CORRIGÉES
+            # -------------------------
+            - export OS_AUTH_URL="https://api.pub1.infomaniak.cloud/identity/v3"
+            - export OS_USERNAME="$OS_USERNAME"
+            - export OS_PASSWORD="$OS_PASSWORD"
+            - export OS_PROJECT_NAME="$OS_PROJECT_NAME"
             - export OS_REGION_NAME="dc3-a"
+            - export OS_USER_DOMAIN_NAME="Default"
+            - export OS_PROJECT_DOMAIN_NAME="Default"
 
+            # -------------------------
             # Export des variables Terraform
-            - export TF_VAR_ssh_key_name=$ssh_key_name
+            # -------------------------
+            - export TF_VAR_ssh_key_name="$ssh_key_name"
             - export TF_VAR_sysadmin_pub_key="$sysadmin_pub_key"
             - export TF_VAR_devops_aya_pub_key="$devops_aya_pub_key"
             - export TF_VAR_terraform_bot_pub_key="$terraform_bot_pub_key"
-            - export TF_VAR_vm_flavor=$vm_flavor
+            - export TF_VAR_vm_flavor="$vm_flavor"
             - export TF_VAR_vm_image="$vm_image"
-            - export TF_VAR_floating_ip_pool=$floating_ip_pool
-            - export TF_VAR_admin_cidr=$admin_cidr
+            - export TF_VAR_floating_ip_pool="$floating_ip_pool"
+            - export TF_VAR_admin_cidr="$admin_cidr"
+
+            # Vérification DES SECRETS
+            - echo "=== Secrets disponibles ==="
+            - echo "OS_USERNAME: $OS_USERNAME"
+            - echo "OS_PROJECT_NAME: $OS_PROJECT_NAME"
+            - echo "ssh_key_name: $ssh_key_name"
+            - echo "vm_flavor: $vm_flavor"
 
             # Vérification des variables exportées
-            - echo "Variables OpenStack :"
-            - env | grep OS_
-            - echo "Variables Terraform :"
-            - env | grep TF_VAR_
+            - echo "=== Variables exportées ==="
+            - env | grep ^OS_
+            - env | grep ^TF_VAR_
 
+            # Test de connexion OpenStack
+            - echo "=== Test connexion OpenStack ==="
+            - openstack --version || apt-get update && apt-get install -y python3-openstackclient
+            - openstack server list --limit 1 || echo "Échec connexion OpenStack"
+
+            # -------------------------
+            # Nettoyage et initialisation
+            # -------------------------
+            - rm -rf .terraform terraform.tfstate* || true
             - terraform init -input=false
-            
-            - terraform plan -out=tfplan -input=false
-            - terraform apply -auto-approve tfplan
 
-           
+            # -------------------------
+            # Planification avec debug
+            # -------------------------
+            - terraform plan -out=tfplan -input=false -detailed-exitcode
+
+            # -------------------------
+            # Application
+            # -------------------------
+            - terraform apply -auto-approve tfplan

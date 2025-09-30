@@ -35,7 +35,6 @@ blocks:
             - terraform init -input=false
             - terraform state list | xargs -n1 terraform state rm || true
             - terraform plan -out=tfplan -input=false
-            - terraform apply -var="OS_AUTH_URL=https://api.pub1.infomaniak.cloud/identity/v3/"
 
             - terraform apply -auto-approve tfplan
             

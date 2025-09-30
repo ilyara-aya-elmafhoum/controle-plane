@@ -16,10 +16,8 @@ blocks:
             - export OS_USERNAME=$OS_USERNAME
             - export OS_PASSWORD=$OS_PASSWORD
             - export OS_PROJECT_NAME=$OS_PROJECT_NAME
-            
-            - export OS_AUTH_URL="https://api.pub1.infomaniak.cloud/identity/v3/"
-
-            - export OS_REGION_NAME="RegionOne"
+            - export OS_AUTH_URL=$OS_AUTH_URL
+            - export OS_REGION_NAME="dc3-a"
 
             # Export des variables Terraform
             - export TF_VAR_ssh_key_name=$ssh_key_name

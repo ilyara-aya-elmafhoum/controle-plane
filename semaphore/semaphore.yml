@@ -24,6 +24,7 @@
           - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
 
           # Terraform Plan et Apply
+        
           - terraform init -input=false
-          - terraform plan -out=tfplan -input=false
-          - terraform apply -auto-approve tfplan
+          - terraform apply -auto-approve | tee terraform_apply.log
+         

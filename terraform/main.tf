@@ -9,7 +9,6 @@ terraform {
 }
 
 provider "openstack" {
-  cloud        = var.openstack_cloud
   user_name    = var.OS_USERNAME
   password     = var.OS_PASSWORD
   tenant_name  = var.OS_PROJECT_NAME

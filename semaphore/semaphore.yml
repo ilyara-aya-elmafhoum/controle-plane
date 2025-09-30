@@ -2,25 +2,24 @@ blocks:
   - name: Terraform Apply
     task:
       secrets:
-        - name: terraforms
+        - name: terraform
      
-      jobs:
+      job:
         - name: Create control-plane
           commands:
             - checkout
             - cd terraform
-            # Export des variables Terraform
-            - export TF_VAR_OS_USERNAME=$OS_USERNAME
-            - export TF_VAR_OS_PASSWORD=$OS_PASSWORD
-            - export TF_VAR_OS_PROJECT_NAME=$OS_PROJECT_NAME
-            - export TF_VAR_OS_auth_url=$OS_auth_url
-            - export TF_VAR_ssh_key_name=$ssh_key_name
-            - export TF_VAR_sysadmin_pub_key="$sysadmin_pub_key"
-            - export TF_VAR_devops_aya_pub_key="$devops_aya_pub_key"
-            - export TF_VAR_terraform_bot_pub_key="$terraform_bot_pub_key"
-            - export TF_VAR_vm_flavor=$vm_flavor
-            - export TF_VAR_vm_image="$vm_image"
-            - export TF_VAR_floating_ip_pool=$floating_ip_pool
-            - export TF_VAR_admin_cidr=$admin_cidr
+            - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
+            - export TF_VAR_OS_PASSWORD=$OS_PASSWORD_SECRET
+            - export TF_VAR_OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET
+            - export TF_VAR_OS_auth_url=$OS_AUTH_URL_SECRET
+            - export TF_VAR_ssh_key_name=$SSH_KEY_NAME_SECRET
+            - export TF_VAR_sysadmin_pub_key="$SYSADMIN_PUB_KEY_SECRET"
+            - export TF_VAR_devops_aya_pub_key="$DEVOPS_AYA_PUB_KEY_SECRET"
+            - export TF_VAR_terraform_bot_pub_key="$TERRAFORM_BOT_PUB_KEY_SECRET"
+            - export TF_VAR_vm_flavor=$VM_FLAVOR_SECRET
+            - export TF_VAR_vm_image="$VM_IMAGE_SECRET"
+            - export TF_VAR_floating_ip_pool=$FLOATING_IP_POOL_SECRET
+            - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
             - terraform init -input=false
             - terraform apply -auto-approve -input=false

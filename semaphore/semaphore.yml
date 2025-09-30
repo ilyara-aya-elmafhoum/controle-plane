@@ -2,18 +2,20 @@
   task:
     secrets:
       - name: terraform
-
     job:
       - name: Create control-plane
         commands:
           - checkout
           - cd terraform
 
-          # Export des variables Terraform depuis les secrets
-          - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
-          - export TF_VAR_OS_PASSWORD=$OS_PASSWORD_SECRET
-          - export TF_VAR_OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET
-          - export TF_VAR_OS_auth_url=$OS_AUTH_URL_SECRET
+          # Export des variables d'environnement OpenStack (pour le provider)
+          - export OS_USERNAME=$OS_USERNAME_SECRET
+          - export OS_PASSWORD=$OS_PASSWORD_SECRET
+          - export OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET
+          - export OS_AUTH_URL=$OS_AUTH_URL_SECRET
+          - export OS_REGION_NAME="RegionOne"
+
+          # Export des variables Terraform pour vos ressources
           - export TF_VAR_ssh_key_name=$SSH_KEY_NAME_SECRET
           - export TF_VAR_sysadmin_pub_key="$SYSADMIN_PUB_KEY_SECRET"
           - export TF_VAR_devops_aya_pub_key="$DEVOPS_AYA_PUB_KEY_SECRET"
@@ -23,8 +25,11 @@
           - export TF_VAR_floating_ip_pool=$FLOATING_IP_POOL_SECRET
           - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
 
-          # Terraform Plan et Apply
-        
+          # Debug : Afficher les variables (à retirer après test)
+          - env | grep OS_
+          - env | grep TF_VAR_
+
+          # Terraform
           - terraform init -input=false
-          - terraform apply -auto-approve | tee terraform_apply.log
-         
+          - terraform plan -out=tfplan
+          - terraform apply -auto-approve tfplan

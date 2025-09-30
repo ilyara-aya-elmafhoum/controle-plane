@@ -1,14 +1,16 @@
 blocks:
-  - name: Terraform Apply
+  - name: Terraform Plan & Apply
     task:
       secrets:
         - name: terraform
-     
-      job:
+
+      jobs:
         - name: Create control-plane
           commands:
             - checkout
             - cd terraform
+
+            # Export des variables Terraform depuis les secrets
             - export TF_VAR_OS_USERNAME=$OS_USERNAME_SECRET
             - export TF_VAR_OS_PASSWORD=$OS_PASSWORD_SECRET
             - export TF_VAR_OS_PROJECT_NAME=$OS_PROJECT_NAME_SECRET
@@ -21,5 +23,9 @@ blocks:
             - export TF_VAR_vm_image="$VM_IMAGE_SECRET"
             - export TF_VAR_floating_ip_pool=$FLOATING_IP_POOL_SECRET
             - export TF_VAR_admin_cidr=$ADMIN_CIDR_SECRET
+
+            # Terraform Plan
             - terraform init -input=false
-            - terraform apply -auto-approve -input=false
+            - terraform plan -out=tfplan -input=false
+
+            - terraform apply -auto-approve tfplan

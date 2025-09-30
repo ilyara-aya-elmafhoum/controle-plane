@@ -11,7 +11,7 @@ terraform {
 provider "openstack" {
   user_name   = var.OS_USERNAME
   password    = var.OS_PASSWORD
-  auth_url    = var.OS_auth_url
+  auth_url    = var.OS_AUTH_URL
   tenant_name = var.OS_PROJECT_NAME
   domain_name = "Default"
   region      = "dc3-a"

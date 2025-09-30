@@ -20,7 +20,7 @@ variable "OS_PROJECT_NAME" {
   type        = string
 }
 
-variable "OS_auth_url" {
+variable "OS_AUTH_URL" {
   description = "URL d'authentification OpenStack"
   type        = string
 }

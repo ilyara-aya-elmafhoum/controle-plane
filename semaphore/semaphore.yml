@@ -1,3 +1,5 @@
+version: "2.0"
+
 blocks:
   - name: Terraform Plan & Apply
     task:
@@ -10,15 +12,18 @@ blocks:
             - checkout
             - cd terraform
 
-            # Export des variables Terraform depuis les secrets
-            # OpenStack
+          
+            # Export des variables OpenStack
+           
             - export OS_USERNAME=$OS_USERNAME
             - export OS_PASSWORD=$OS_PASSWORD
             - export OS_PROJECT_NAME=$OS_PROJECT_NAME
             - export OS_AUTH_URL=$OS_auth_url
             - export OS_REGION_NAME="RegionOne"
 
-            # Terraform
+           
+            # Export des variables Terraform
+           
             - export TF_VAR_ssh_key_name=$ssh_key_name
             - export TF_VAR_sysadmin_pub_key="$sysadmin_pub_key"
             - export TF_VAR_devops_aya_pub_key="$devops_aya_pub_key"
@@ -28,9 +33,13 @@ blocks:
             - export TF_VAR_floating_ip_pool=$floating_ip_pool
             - export TF_VAR_admin_cidr=$admin_cidr
 
+            # Debug (à activer seulement pour test)
+          
+            - env | grep OS_
+            - env | grep TF_VAR_
 
-            # Terraform Plan
+            # Terraform
+            
             - terraform init -input=false
             - terraform plan -out=tfplan -input=false
-
             - terraform apply -auto-approve tfplan

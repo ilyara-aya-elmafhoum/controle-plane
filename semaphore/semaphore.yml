@@ -29,12 +29,12 @@ blocks:
             - export TF_VAR_floating_ip_pool=$floating_ip_pool
             - export TF_VAR_admin_cidr=$admin_cidr
 
-            # Debug (à activer seulement pour test)
             - env | grep OS_
             - env | grep TF_VAR_
 
-            # Terraform : réinitialisation de l'état pour forcer la recréation
             - terraform init -input=false
-            # Exemple : forcer uniquement la ressource controle_plane à être recréée
-            - terraform plan -replace="openstack_compute_instance_v2.controle_plane" -out=tfplan -input=false
+            - terraform state list | xargs -n1 terraform state rm || true
+            - terraform plan -out=tfplan -input=false
             - terraform apply -auto-approve tfplan
+            
+           

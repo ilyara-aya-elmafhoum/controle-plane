@@ -18,7 +18,9 @@ blocks:
             - export OS_USERNAME=$OS_USERNAME
             - export OS_PASSWORD=$OS_PASSWORD
             - export OS_PROJECT_NAME=$OS_PROJECT_NAME
-            - export OS_AUTH_URL=$OS_auth_url
+            
+            - export OS_AUTH_URL=$OS_AUTH_URL
+
             - export OS_REGION_NAME="RegionOne"
 
            

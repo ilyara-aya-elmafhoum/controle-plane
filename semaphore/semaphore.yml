@@ -60,8 +60,8 @@ blocks:
 
             # -------------------------
             # Planification avec debug
-            # -------------------------
-            - terraform plan -out=tfplan -input=false -detailed-exitcode
+            # ------------------------
+            - terraform apply -auto-approve -refresh-only=false
 
             # -------------------------
             # Application

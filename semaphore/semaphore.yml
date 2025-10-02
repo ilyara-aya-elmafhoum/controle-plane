@@ -12,9 +12,7 @@ blocks:
             - checkout
             - cd terraform
 
-            # -------------------------
-            # Export des variables OpenStack CORRIGÉES
-            # -------------------------
+            # Export OpenStack variables
             - export OS_AUTH_URL="https://api.pub1.infomaniak.cloud/identity/v3"
             - export OS_USERNAME="$OS_USERNAME"
             - export OS_PASSWORD="$OS_PASSWORD"
@@ -23,9 +21,7 @@ blocks:
             - export OS_USER_DOMAIN_NAME="Default"
             - export OS_PROJECT_DOMAIN_NAME="Default"
 
-            # -------------------------
-            # Export des variables Terraform
-            # -------------------------
+            # Export Terraform variables
             - export TF_VAR_ssh_key_name="$ssh_key_name"
             - export TF_VAR_sysadmin_pub_key="$sysadmin_pub_key"
             - export TF_VAR_devops_aya_pub_key="$devops_aya_pub_key"
@@ -35,35 +31,11 @@ blocks:
             - export TF_VAR_floating_ip_pool="$floating_ip_pool"
             - export TF_VAR_admin_cidr="$admin_cidr"
 
-            # Vérification DES SECRETS
-            - echo "=== Secrets disponibles ==="
-            - echo "OS_USERNAME: $OS_USERNAME"
-            - echo "OS_PROJECT_NAME: $OS_PROJECT_NAME"
-            - echo "ssh_key_name: $ssh_key_name"
-            - echo "vm_flavor: $vm_flavor"
-
-            # Vérification des variables exportées
-            - echo "=== Variables exportées ==="
-            - env | grep ^OS_
-            - env | grep ^TF_VAR_
-
-            # Test de connexion OpenStack
-            - echo "=== Test connexion OpenStack ==="
-            - openstack --version || apt-get update && apt-get install -y python3-openstackclient
-            - openstack server list --limit 1 || echo "Échec connexion OpenStack"
-
-            # -------------------------
-            # Nettoyage et initialisation
-            # -------------------------
-            - rm -rf .terraform terraform.tfstate* || true
+            # Terraform init
             - terraform init -input=false
 
-            # -------------------------
-            # Planification avec debug
-            # ------------------------
-            - terraform apply -auto-approve -refresh-only=false
+            # Terraform plan
+            - terraform plan -out=tfplan -input=false -detailed-exitcode
 
-            # -------------------------
-            # Application
-            # -------------------------
-            - terraform apply -auto-approve tfplan
+            # Terraform apply
+            - terraform apply -auto-approve tfplany

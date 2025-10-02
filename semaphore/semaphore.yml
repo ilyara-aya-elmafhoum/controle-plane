@@ -29,6 +29,7 @@ blocks:
             - export TF_VAR_floating_ip_pool="$floating_ip_pool"
             - export TF_VAR_admin_cidr="$admin_cidr"
             - export TF_VAR_network_name="$network_name"
+            
 
             # Vérification
             - echo "VM Image: $vm_image"
@@ -38,4 +39,3 @@ blocks:
             - terraform init -input=false
             - terraform plan -out=tfplan -input=false -detailed-exitcode
             - terraform apply -auto-approve tfplany
-            

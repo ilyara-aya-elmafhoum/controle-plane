@@ -71,3 +71,8 @@ variable "terraform_bot_pub_key" {
   description = "Terraform bot SSH public key (content)"
   type        = string
 }
+variable "network_name" {
+  description = "Nom du réseau sur lequel créer la VM"
+  type        = string
+
+}

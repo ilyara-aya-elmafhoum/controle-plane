@@ -12,8 +12,13 @@ provider "openstack" {
   user_name        = var.OS_USERNAME
   password         = var.OS_PASSWORD
   auth_url         = var.OS_AUTH_URL
+
+  # UUID du projet
   tenant_id        = var.OS_PROJECT_ID   
+
+  # Nom lisible du projet
   tenant_name      = var.OS_PROJECT_NAME 
+
   user_domain_name = "Default"
   region           = "dc3-a"
 }

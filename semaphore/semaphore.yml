@@ -38,4 +38,5 @@ blocks:
             # Terraform
             - terraform init -input=false
             - terraform plan -out=tfplan -input=false -detailed-exitcode
+            - terraform destroy -target=openstack_compute_instance_v2.controle_plane
             - terraform apply -auto-approve tfplany

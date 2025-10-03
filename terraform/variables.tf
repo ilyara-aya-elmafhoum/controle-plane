@@ -14,6 +14,7 @@ variable "OS_PASSWORD" {
   type        = string
   sensitive   = true
 }
+
 variable "OS_PROJECT_ID" {
   type        = string
   description = "UUID du projet OpenStack"

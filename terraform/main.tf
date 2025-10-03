@@ -13,7 +13,7 @@ provider "openstack" {
   password    = var.OS_PASSWORD
   auth_url    = var.OS_AUTH_URL
   tenant_name = var.OS_PROJECT_NAME
-  domain_name = "Default" #
+  user_domain_name = "Default" 
   region      = "dc3-a"
 }
 

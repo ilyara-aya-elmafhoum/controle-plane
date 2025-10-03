@@ -33,7 +33,7 @@ variable "OS_AUTH_URL" {
 variable "ssh_key_name" {
   description = "Nom de la clé SSH dans OpenStack"
   type        = string
-  default     = "my-ssh-key"  # Ajoutez une valeur par défaut
+  default     = "my-ssh-key"  
 }
 
 
@@ -41,25 +41,25 @@ variable "ssh_key_name" {
 variable "vm_flavor" {
   description = "Type d'instance VM"
   type        = string
-  default     = "nva2_a4_ram8_disk50_perf2"  # Valeur par défaut
+  
 }
 
 variable "vm_image" {
   description = "Image de la VM"
   type        = string
-  default     = "Ubuntu 22.04"  # Valeur par défaut
+ 
 }
 
 variable "floating_ip_pool" {
   description = "Pool d'IP flottantes"
   type        = string
-  default     = "public"  # Valeur par défaut
+  
 }
 
 variable "admin_cidr" {
   description = "CIDR admin pour les règles de sécurité"
   type        = string
-  default     = "0.0.0.0/0"  # Valeur par défaut
+  
 }
 
 variable "sysadmin_pub_key" {

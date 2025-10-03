@@ -15,7 +15,7 @@ provider "openstack" {
   tenant_name = var.OS_PROJECT_NAME
   domain_name = "Default"
   region      = "dc3-a"
-}
+  }
 
 
 # SECURITY GROUP
